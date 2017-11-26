@@ -1,0 +1,372 @@
+library(shiny)
+library(ggplot2)
+library(dplyr)
+library(magrittr)
+
+ui <- fluidPage(
+  titlePanel("Property Record CSV Cleaner"),
+  sidebarLayout(sidebarPanel(fileInput("fileInput", "Original CSV", multiple = FALSE, accept = ".csv",
+                                       width = '400px', buttonLabel = 'Browse...', placeholder = 'No File Selected'),
+                             actionButton('actionButton','Clean'),
+                             uiOutput("cleanmessage")),
+                mainPanel(downloadButton('downloadData','Output File',class = NULL),
+                          verbatimTextOutput('ready'),
+                          tableOutput('table')
+                )
+      )
+)
+
+server <- function(input, output) {
+  
+  data <- reactive({
+    if(input$actionButton == 0) {
+      return(NULL)
+    }
+    if (is.null(input$inFile)) {
+      return(NULL)
+    }
+    
+    #the objective here is to take the input data file, clean it and return
+    #the clean file
+    
+    {a <- input$inFile
+      a$X1<-NULL
+      a$x.11<-NULL
+      a$x.14<-NULL
+      a$x.16<-NULL
+     return(a)
+      
+    }
+    
+    }
+    )
+  
+  
+  #User Notification
+  observeEvent(input$actionButton, {
+    output$ready <- renderText({'File Ready'})
+  })
+  
+ #File Output
+  output$downloadData <- output$downloadData <- downloadHandler(
+    filename = function() {
+      paste(input$fileInput, ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(data(), file, row.names = FALSE)
+    }
+  )
+  
+  #Table Output
+  observeEvent(input$actionButton, {output$table <- 
+  {
+    
+    renderTable({
+    
+      if (is.null(input$inFile)){
+        return(NULL)}
+      
+      data()
+      
+    })
+  }
+  
+  }
+  )
+  }
+
+shinyApp(ui = ui, server = server)
+
+
+#DPUT OUTPUT
+
+structure(list(X1 = 1:51, x = c("ParcelNumber", "\r\r\n17 024800030110<U+00A0>\r\r\n", 
+"\r\r\n17 024800030110<U+00A0>\r\r\n", "\r\r\n17 024300020207<U+00A0>\r\r\n", 
+"\r\r\n17 024300020207<U+00A0>\r\r\n", "\r\r\n14 009400102101<U+00A0>\r\r\n", 
+"\r\r\n17 022000060184<U+00A0>\r\r\n", "\r\r\n12 203104200840<U+00A0>\r\r\n", 
+"\r\r\n14 014000050411<U+00A0>\r\r\n", "\r\r\n14F000500030494<U+00A0>\r\r\n", 
+"\r\r\n12 228105410973<U+00A0>\r\r\n", "\r\r\n12 216105190190<U+00A0>\r\r\n", 
+"\r\r\n14F0128  LL1316<U+00A0>\r\r\n", "\r\r\n14 013700010832<U+00A0>\r\r\n", 
+"\r\r\n17 025300050466<U+00A0>\r\r\n", "\r\r\n17 018800050011<U+00A0>\r\r\n", 
+"\r\r\n17 018800050037<U+00A0>\r\r\n", "\r\r\n14 010500080056<U+00A0>\r\r\n", 
+"\r\r\n14 010500080056<U+00A0>\r\r\n", "\r\r\n12 281107260045<U+00A0>\r\r\n", 
+"\r\r\n14F0128  LL0177<U+00A0>\r\r\n", "\r\r\n12 194704380290<U+00A0>\r\r\n", 
+"\r\r\n17 024800010229<U+00A0>\r\r\n", "\r\r\n14 011600070757<U+00A0>\r\r\n", 
+"\r\r\n11 035001570889<U+00A0>\r\r\n", "\r\r\n14 012700020536<U+00A0>\r\r\n", 
+"\r\r\n14 012700020510<U+00A0>\r\r\n", "\r\r\n17 018500030024<U+00A0>\r\r\n", 
+"\r\r\n13 009600010213<U+00A0>\r\r\n", "\r\r\n14F0012  LL2131<U+00A0>\r\r\n", 
+"\r\r\n17 018600014555<U+00A0>\r\r\n", "\r\r\n17 0227  LL1315<U+00A0>\r\r\n", 
+"\r\r\n12 194104360108<U+00A0>\r\r\n", "\r\r\n13 003000030210<U+00A0>\r\r\n", 
+"\r\r\n17 006000080599<U+00A0>\r\r\n", "\r\r\n06 033600050312<U+00A0>\r\r\n", 
+"\r\r\n17 017900040021<U+00A0>\r\r\n", "\r\r\n14 009400102028<U+00A0>\r\r\n", 
+"\r\r\n17 022600070369<U+00A0>\r\r\n", "\r\r\n14 009400091106<U+00A0>\r\r\n", 
+"\r\r\n14 014000030066<U+00A0>\r\r\n", "\r\r\n14 011900040807<U+00A0>\r\r\n", 
+"\r\r\n12 215105180698<U+00A0>\r\r\n", "\r\r\n11 048501870154<U+00A0>\r\r\n", 
+"\r\r\n11 077002744634<U+00A0>\r\r\n", "\r\r\n14 009900021496<U+00A0>\r\r\n", 
+"\r\r\n22 346112890091<U+00A0>\r\r\n", "\r\r\n13 016100031615<U+00A0>\r\r\n", 
+"\r\r\n13 0125  LL1200<U+00A0>\r\r\n", "\r\r\n12 263307050244<U+00A0>\r\r\n", 
+"\r\r\n09F340001502918<U+00A0>\r\r\n"), x.1 = c("OwnerName", 
+"CROSSSTONE MANAGEMENT LLC<U+00A0>", "CROSSSTONE MANAGEMENT LLC<U+00A0>", 
+"EDENS & WHITT HOLDINGS LLC<U+00A0>", "EDENS & WHITT HOLDINGS LLC<U+00A0>", 
+"CRAKER LATHAN K<U+00A0>", "PLUMER NATALIE L<U+00A0>", "RANGEL PATTY<U+00A0>", 
+"COBB TIFFANY<U+00A0>", "EGERTON QUINIESE<U+00A0>", "FALL NDOYE NDEYE SEYNABOU<U+00A0>", 
+"BREINER TODD A<U+00A0>", "MONROE LINDA A<U+00A0>", "CHO HOLDINGS LLC<U+00A0>", 
+"AUER COLIN & AUER ASHLEY<U+00A0>", "GEORGIA POWER COMPANY TAX DEPT BIN 10120<U+00A0>", 
+"GEORGIA POWER COMPANY TAX DEPT BIN 10120<U+00A0>", "METRO ATL HOLDINGS LLC<U+00A0>", 
+"METRO ATL HOLDINGS LLC<U+00A0>", "KAHN BLAKE & KAHN BROOKE<U+00A0>", 
+"BULLUCK SHELDON MAURICE<U+00A0>", "TIGHE MICHAEL RYAN & TIGHE COURTNEY DANIELLE<U+00A0>", 
+"MURRELL SOCIAL SERVICES INC<U+00A0>", "CIVITAS WEST END LLC<U+00A0>", 
+"BATBAYAR DELGER & DA SILVA DAMIEN MARQUES<U+00A0>", "SHORT CONSTRUCTION INC<U+00A0>", 
+"SHORT CONSTRUCTION INC<U+00A0>", "MAAS DANIEL M & MAAS REBECCA M<U+00A0>", 
+"GONZALES ROUGET<U+00A0>", "STIBBINS SHARAN<U+00A0>", "WICKS KENNNETH & PRATT ANDREW W<U+00A0>", 
+"HARRIS BRENT D<U+00A0>", "STEWART JAMES C & NELLIE E<U+00A0>", 
+"URBAN PROPERTY SOLUTIONS LLC<U+00A0>", "BUCKHEAD BASEBALL INC<U+00A0>", 
+"HARTIGAN TIMOTHY J & HARTIGAN SUZANNE S<U+00A0>", "BENECKI LLC<U+00A0>", 
+"CRAKER LATHAN K<U+00A0>", "CROSSSTONE MANAGEMENT LLC<U+00A0>", 
+"VIGAR INVESTMENTS LLC<U+00A0>", "PALMER MATTHEW & STEPP BONNIE<U+00A0>", 
+"FIRST CITY ESTATE INTERNATIONAL LLC<U+00A0>", "SWEITZER ARIELLE NAPP & SWEITZER MATTHEW JAMES<U+00A0>", 
+"WILSON CHARLES M & WILSON CATHY HENKEL<U+00A0>", "GIBBONS MARC & HOBBY ANNA L<U+00A0>", 
+"STROWBRIDGE DEXTER<U+00A0>", "BRIMER SUSAN H & BRIMER SILVEY E<U+00A0>", 
+"RAGLAND CALVIN<U+00A0>", "OWENS SHELTON<U+00A0>", "LEACH ELIZABETH P & LEACH SHANNON M<U+00A0>", 
+"ALCENDOR TRILIA<U+00A0>"), x.2 = c("Grantor", "DANIELS ROBERT W.<U+00A0>", 
+"DANIELS ROBERT W.<U+00A0>", "SHIVANAND CORPORATION<U+00A0>", 
+"SHIVANAND CORPORATION<U+00A0>", "RAYMOND B. GOODFELLOW AND LYNDA T. GOODF<U+00A0>", 
+"GREGORY, III HENRY D.<U+00A0>", "LANG LESLEY M<U+00A0>", "PC PROPERTY INVESTMENTS LLC<U+00A0>", 
+"CONWAY TENNILLE<U+00A0>", "FLOOD PATRICK<U+00A0>", "JIM ROZE CORP.<U+00A0>", 
+"D. R. HORTON, INC., A DELAWARE CORPORATI<U+00A0>", "SOUTHERN STATE INVESTMENTS, LLC<U+00A0>", 
+"AUER COLIN<U+00A0>", "ENGLAND LINDA<U+00A0>", "ENGLAND LINDA<U+00A0>", 
+"TAN BEE CHU JOANN<U+00A0>", "JACKSON KIMBERLY<U+00A0>", "ROBERT L. CORDES, JR. AND ASHLEY M. CORD<U+00A0>", 
+"D. R. HORTON, INC., A DELAWARE CORPORATI<U+00A0>", "JOHNSON V BURL<U+00A0>", 
+"BRYANT MARSHALL KEITH<U+00A0>", "BRYANT LENARD A.<U+00A0>", 
+"BURNETTE SYLVIA<U+00A0>", "D.M. PENCE, INC.<U+00A0>", "D.M. PENCE, INC.<U+00A0>", 
+"MARTONE KELLY<U+00A0>", "FANNIE MAE A/K/A FEDERAL NATIONAL MORTGA<U+00A0>", 
+"TURNER TAMMY<U+00A0>", "MARTIN ARLIE R.<U+00A0>", "BROCK BUILT HOMES LLC<U+00A0>", 
+"MICHAEL WAYNE STEWART, EXEC. OF ESTATE O<U+00A0>", "SOUTHERN R & R LLC<U+00A0>", 
+"STATER TIMOTHY M<U+00A0>", "MOELLER MARK D<U+00A0>", "HIRSH MICHAEL<U+00A0>", 
+"RAYMOND B. GOODFELLOW AND LYNDA T. GOODF<U+00A0>", "HAZEL BROWN, BY PATRICE B. GREER, AS HER<U+00A0>", 
+"COILE EDWARD J.<U+00A0>", "REESE CONSTRUCTION COMPANY INCORPORATED<U+00A0>", 
+"BOYD MARK<U+00A0>", "SCHMIETT CASEY R.<U+00A0>", "FUQUA DEBORAH A.<U+00A0>", 
+"DOCKER BRENT L.<U+00A0>", "HOMEBILT, INC.<U+00A0>", "BRIMER SUSAN H<U+00A0>", 
+"RAGLAND MARILYN<U+00A0>", "RAMSEY GEORGE<U+00A0>", "LUIS IBARRA AND LISA IBARRA<U+00A0>", 
+"BRENDA STEELE AKA BRENDA N. STEELE<U+00A0>"), x.3 = c("Grantee", 
+"CROSSSTONE MANAGEMENT LLC<U+00A0>", "CROSSSTONE MANAGEMENT LLC<U+00A0>", 
+"EDENS & WHITT HOLDINGS LLC<U+00A0>", "EDENS & WHITT HOLDINGS LLC<U+00A0>", 
+"CRAKER LATHAN K<U+00A0>", "PLUMER NATALIE L<U+00A0>", "RANGEL PATTY<U+00A0>", 
+"COBB TIFFANY<U+00A0>", "EGERTON QUINIESE<U+00A0>", "FALL NDOYE NDEYE SEYNABOU<U+00A0>", 
+"BREINER TODD A<U+00A0>", "MONROE LINDA A<U+00A0>", "CHO HOLDINGS LLC<U+00A0>", 
+"AUER COLIN &<U+00A0>", "MARIETTA ROAD I LLC<U+00A0>", "MARIETTA ROAD I LLC<U+00A0>", 
+"SOUTHERN STATE INVESTMENTS LLC<U+00A0>", "FIELDS JOSEPH<U+00A0>", 
+"KAHN BLAKE &<U+00A0>", "BULLUCK SHELDON MAURICE<U+00A0>", "TIGHE MICHAEL RYAN &<U+00A0>", 
+"MURRELL SOCIAL SERVICES INC<U+00A0>", "CIVITAS WEST END LLC<U+00A0>", 
+"BATBAYAR DELGER &<U+00A0>", "SHORT CONSTRUCTION INC<U+00A0>", 
+"SHORT CONSTRUCTION INC<U+00A0>", "MAAS DANIEL M &<U+00A0>", 
+"GONZALES ROUGET<U+00A0>", "STIBBINS SHARAN<U+00A0>", "WICKS KENNNETH &<U+00A0>", 
+"HARRIS BRENT D<U+00A0>", "STEWART MICHAEL WAYNE<U+00A0>", "URBAN PROPERTY SOLUTIONS LLC<U+00A0>", 
+"BUCKHEAD BASEBALL INC<U+00A0>", "HARTIGAN TIMOTHY J &<U+00A0>", 
+"BUCKHEAD INVESTOR GROUP LLC<U+00A0>", "CRAKER LATHAN K<U+00A0>", 
+"CROSSSTONE MANAGEMENT LLC<U+00A0>", "PROPERTY REPOSITION LLC<U+00A0>", 
+"HD CRAFTSMAN HOMES INC<U+00A0>", "FIRST CITY ESTATE INTERNATIONAL LLC<U+00A0>", 
+"SWEITZER ARIELLE NAPP &<U+00A0>", "WILSON CHARLES M<U+00A0>", 
+"GIBBONS MARC &<U+00A0>", "STROWBRIDGE DEXTER<U+00A0>", "BRIMER SUSAN H &<U+00A0>", 
+"RAGLAND CALVIN<U+00A0>", "OWENS SHELTON<U+00A0>", "LEACH ELIZABETH P &<U+00A0>", 
+"ALCENDOR TRILIA<U+00A0>"), x.4 = c("Zoning", "R4A-<U+00A0>", 
+"R4A-<U+00A0>", "I2-<U+00A0>", "I2-<U+00A0>", "R1-<U+00A0>", 
+"R4-<U+00A0>", "R4-<U+00A0>", "R5-<U+00A0>", "R4-<U+00A0>", "R3C-<U+00A0>", 
+"I1-<U+00A0>", "AG1-<U+00A0>", "R4-<U+00A0>", "R5-<U+00A0>", 
+"I2-<U+00A0>", "I1-<U+00A0>", "R4-<U+00A0>", "R4-<U+00A0>", "CUPC-<U+00A0>", 
+"CUP-<U+00A0>", "R5-<U+00A0>", "R5-<U+00A0>", "R5-<U+00A0>", 
+"CUP-<U+00A0>", "RSF-<U+00A0>", "RSF-<U+00A0>", "R4-<U+00A0>", 
+"R3-<U+00A0>", "TR-<U+00A0>", "RG2-<U+00A0>", "PDMU-<U+00A0>", 
+"R5-<U+00A0>", "R3-<U+00A0>", "R4-<U+00A0>", "R3AC-<U+00A0>", 
+"R2-<U+00A0>", "R1-<U+00A0>", "R5-<U+00A0>", "R1-<U+00A0>", "R5-<U+00A0>", 
+"R5-<U+00A0>", "R3-<U+00A0>", "CUP-<U+00A0>", "CUP-<U+00A0>", 
+"R1-<U+00A0>", "R1C-<U+00A0>", "R4-<U+00A0>", "TRCOND-<U+00A0>", 
+"R2C-<U+00A0>", "SUBC-<U+00A0>"), x.5 = c("PropertyClass", "R3<U+00A0>", 
+"R3<U+00A0>", "C3<U+00A0>", "C3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "C3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "U3<U+00A0>", "U3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", 
+"R3<U+00A0>", "C3<U+00A0>", "R3<U+00A0>", "E3<U+00A0>", "E3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R4<U+00A0>", "R4<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", 
+"R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>", "R3<U+00A0>"), x.6 = c("District", 
+"05V<U+00A0>", "05V<U+00A0>", "05V<U+00A0>", "05V<U+00A0>", "30<U+00A0>", 
+"05<U+00A0>", "45<U+00A0>", "05<U+00A0>", "05<U+00A0>", "45<U+00A0>", 
+"45<U+00A0>", "55<U+00A0>", "05<U+00A0>", "05<U+00A0>", "05T<U+00A0>", 
+"05T<U+00A0>", "05<U+00A0>", "05<U+00A0>", "45<U+00A0>", "55<U+00A0>", 
+"45<U+00A0>", "05V<U+00A0>", "05<U+00A0>", "10<U+00A0>", "30<U+00A0>", 
+"30<U+00A0>", "05<U+00A0>", "55<U+00A0>", "55<U+00A0>", "05<U+00A0>", 
+"05V<U+00A0>", "45<U+00A0>", "15<U+00A0>", "05<U+00A0>", "59<U+00A0>", 
+"05<U+00A0>", "30<U+00A0>", "05V<U+00A0>", "30<U+00A0>", "05<U+00A0>", 
+"05<U+00A0>", "45<U+00A0>", "57<U+00A0>", "57<U+00A0>", "30<U+00A0>", 
+"45<U+00A0>", "55<U+00A0>", "55<U+00A0>", "45<U+00A0>", "55<U+00A0>"
+), x.7 = c("SaleDate", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>", 
+"2017-01-31<U+00A0>", "2017-01-31<U+00A0>", "2017-01-31<U+00A0>"
+), x.8 = c("SalePrice", "<U+00A0>", "$       19,000<U+00A0>", 
+"<U+00A0>", "$    1,100,000<U+00A0>", "$      124,900<U+00A0>", 
+"<U+00A0>", "$       93,828<U+00A0>", "$      195,000<U+00A0>", 
+"$       95,000<U+00A0>", "$      228,000<U+00A0>", "$       99,000<U+00A0>", 
+"$      226,642<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+"<U+00A0>", "$       48,000<U+00A0>", "$       15,000<U+00A0>", 
+"$      380,000<U+00A0>", "$      299,000<U+00A0>", "$      285,000<U+00A0>", 
+"<U+00A0>", "<U+00A0>", "$      519,900<U+00A0>", "$       56,000<U+00A0>", 
+"$       56,000<U+00A0>", "$      635,000<U+00A0>", "$       46,100<U+00A0>", 
+"$      114,000<U+00A0>", "$       74,500<U+00A0>", "$      334,900<U+00A0>", 
+"<U+00A0>", "$       32,000<U+00A0>", "$            1<U+00A0>", 
+"$    1,100,000<U+00A0>", "<U+00A0>", "$      124,900<U+00A0>", 
+"<U+00A0>", "$       30,000<U+00A0>", "$       55,000<U+00A0>", 
+"$       20,000<U+00A0>", "$      360,000<U+00A0>", "$      210,000<U+00A0>", 
+"$      157,500<U+00A0>", "$      304,400<U+00A0>", "<U+00A0>", 
+"<U+00A0>", "$           10<U+00A0>", "$      262,000<U+00A0>", 
+"$      119,900<U+00A0>"), x.9 = c("LivingArea", "975<U+00A0>", 
+"975<U+00A0>", "5,476<U+00A0>", "5,476<U+00A0>", "0<U+00A0>", 
+"1,256<U+00A0>", "1,000<U+00A0>", "1,128<U+00A0>", "925<U+00A0>", 
+"924<U+00A0>", "1,000<U+00A0>", "0<U+00A0>", "815<U+00A0>", "1,271<U+00A0>", 
+"0<U+00A0>", "0<U+00A0>", "1,685<U+00A0>", "1,685<U+00A0>", "2,467<U+00A0>", 
+"0<U+00A0>", "1,925<U+00A0>", "0<U+00A0>", "17,888<U+00A0>", 
+"2,958<U+00A0>", "0<U+00A0>", "0<U+00A0>", "2,013<U+00A0>", "1,552<U+00A0>", 
+"1,496<U+00A0>", "525<U+00A0>", "2,144<U+00A0>", "1,848<U+00A0>", 
+"1,970<U+00A0>", "0<U+00A0>", "4,598<U+00A0>", "2,832<U+00A0>", 
+"1,008<U+00A0>", "773<U+00A0>", "729<U+00A0>", "1,740<U+00A0>", 
+"960<U+00A0>", "2,424<U+00A0>", "1,396<U+00A0>", "2,533<U+00A0>", 
+"2,615<U+00A0>", "1,841<U+00A0>", "2,378<U+00A0>", "1,550<U+00A0>", 
+"1,632<U+00A0>", "1,229<U+00A0>"), x.10 = c("Acres", "0.2181<U+00A0>", 
+"0.2181<U+00A0>", "0.8<U+00A0>", "0.8<U+00A0>", "0.06<U+00A0>", 
+"0.3202<U+00A0>", "0.023<U+00A0>", "0.1774<U+00A0>", "0.4407<U+00A0>", 
+"0.1615<U+00A0>", "0.023<U+00A0>", "0.237<U+00A0>", "0.1377<U+00A0>", 
+"0.17<U+00A0>", "0.2066<U+00A0>", "0.2124<U+00A0>", "0.1605<U+00A0>", 
+"0.1605<U+00A0>", "0.3079<U+00A0>", "0.2611<U+00A0>", "0.89<U+00A0>", 
+"0.5051<U+00A0>", "0.9504<U+00A0>", "0.2803<U+00A0>", "0.11<U+00A0>", 
+"0.12<U+00A0>", "0.605<U+00A0>", "0.6221<U+00A0>", "0.02<U+00A0>", 
+"0.0121<U+00A0>", "0.12<U+00A0>", "0.6942<U+00A0>", "0.5802<U+00A0>", 
+"0.7247<U+00A0>", "2.27<U+00A0>", "2.4<U+00A0>", "0.3116<U+00A0>", 
+"0.2412<U+00A0>", "0.1722<U+00A0>", "0.1687<U+00A0>", "0.0785<U+00A0>", 
+"0.22<U+00A0>", "0.1683<U+00A0>", "0.2886<U+00A0>", "0.21<U+00A0>", 
+"0.8032<U+00A0>", "0.3716<U+00A0>", "0.0568<U+00A0>", "0.3099<U+00A0>", 
+"0.4176<U+00A0>"), x.11 = c("SaleQual", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", "U<U+00A0>", 
+"U<U+00A0>", "U<U+00A0>", "U<U+00A0>"), x.12 = c("YearBuilt", 
+"1945<U+00A0>", "1945<U+00A0>", "1985<U+00A0>", "1985<U+00A0>", 
+"0<U+00A0>", "1958<U+00A0>", "1980<U+00A0>", "1920<U+00A0>", 
+"1950<U+00A0>", "1978<U+00A0>", "1983<U+00A0>", "0<U+00A0>", 
+"1950<U+00A0>", "2000<U+00A0>", "0<U+00A0>", "0<U+00A0>", "1918<U+00A0>", 
+"1918<U+00A0>", "1980<U+00A0>", "0<U+00A0>", "1993<U+00A0>", 
+"0<U+00A0>", "1953<U+00A0>", "1997<U+00A0>", "0<U+00A0>", "0<U+00A0>", 
+"1950<U+00A0>", "1970<U+00A0>", "2006<U+00A0>", "1970<U+00A0>", 
+"2016<U+00A0>", "1976<U+00A0>", "1988<U+00A0>", "0<U+00A0>", 
+"1996<U+00A0>", "1956<U+00A0>", "1935<U+00A0>", "1940<U+00A0>", 
+"1950<U+00A0>", "1930<U+00A0>", "1920<U+00A0>", "1996<U+00A0>", 
+"1994<U+00A0>", "1998<U+00A0>", "2016<U+00A0>", "1975<U+00A0>", 
+"1982<U+00A0>", "2004<U+00A0>", "1980<U+00A0>", "2005<U+00A0>"
+), x.13 = c("LocationAddress", "2367 SUMMIT AVE<U+00A0>", "2367 SUMMIT AVE<U+00A0>", 
+"2414 MARIETTA BLVD<U+00A0>", "2414 MARIETTA BLVD<U+00A0>", "MAPLE ST<U+00A0>", 
+"2438 FERNLEAF CT<U+00A0>", "503 WARM SPRINGS CIR<U+00A0>", "435 HOPKINS ST<U+00A0>", 
+"3690 ASBURY LN<U+00A0>", "680 SINGING HILLS CT<U+00A0>", "11205 ALPHARETTA HWY G 3<U+00A0>", 
+"2804 BLUESTONE DR<U+00A0>", "1315 ELIZABETH AVE<U+00A0>", "2665 ROSEMARY ST<U+00A0>", 
+"BOYD AVE<U+00A0>", "BOYD AVE<U+00A0>", "806 DILL AVE<U+00A0>", 
+"806 DILL AVE<U+00A0>", "430 LOFTY LN<U+00A0>", "2684 BLUESTONE DR<U+00A0>", 
+"1340 PRIMROSE DR<U+00A0>", "LOTUS AVE<U+00A0>", "1097 WESTVIEW DR<U+00A0>", 
+"4140 BRECKENRIDGE CT<U+00A0>", "902 MARGARET ST<U+00A0>", "903 MARGARET ST<U+00A0>", 
+"2186 BROOKVIEW DR<U+00A0>", "3425 RAVENSWOODS DR<U+00A0>", "3694 UTOY DR<U+00A0>", 
+"1150 COLLIER RD UNIT 17 I<U+00A0>", "1965 BOYD TRACE LN<U+00A0>", 
+"690 ROUNSAVILLE RD<U+00A0>", "4465 KENT RD<U+00A0>", "OLD DECATUR RD # R<U+00A0>", 
+"90 SADDLEVIEW RUN<U+00A0>", "1095 WEST CONWAY DR<U+00A0>", "3130 OLD JONESBORO RD<U+00A0>", 
+"1013 SIMS AVE<U+00A0>", "241 BIRCH ST<U+00A0>", "303 ATWOOD ST<U+00A0>", 
+"1003 SPARKS ST<U+00A0>", "1180 ARBOR CREEK DR<U+00A0>", "10745 MORTON CHASE WAY<U+00A0>", 
+"5630 OXBOROUGH WAY<U+00A0>", "OAKDALE RD LOT 1<U+00A0>", "730 BROOKFIELD PKWY<U+00A0>", 
+"7090 HANIA DR<U+00A0>", "2555 FLAT SHOALS RD 2801<U+00A0>", 
+"805 CRAB ORCHARD DR<U+00A0>", "4935 WOLFCREEK VIEW<U+00A0>"), 
+    x.14 = c("Neighborhood", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", "<U+00A0>", 
+    "<U+00A0>", "<U+00A0>"), x.15 = c("Sales Validity", "Sale < = 1000<U+00A0>", 
+    "Valid Sale<U+00A0>", "Sale < = 1000<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Sale < = 1000<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Valid Sale<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Valid Sale<U+00A0>", 
+    "Sale < = 1000<U+00A0>", "Deed of Gift<U+00A0>", "Sale Includes Multiple Parcels<U+00A0>", 
+    "Sale Includes Multiple Parcels<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Valid Sale<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Deed of Gift<U+00A0>", "Sale < = 1000<U+00A0>", "Valid Sale<U+00A0>", 
+    "Sale Includes Multiple Parcels<U+00A0>", "Sale Includes Multiple Parcels<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "2B<U+00A0>", "Valid Sale<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Valid Sale<U+00A0>", 
+    "Sale < = 1000<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Sale < = 1000<U+00A0>", "Valid Sale<U+00A0>", "Sale < = 1000<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "6F<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Unvalidated/Deed Stamps<U+00A0>", 
+    "Valid Sale<U+00A0>", "Valid Sale<U+00A0>", "Partial Interest<U+00A0>", 
+    "Unvalidated/Deed Stamps<U+00A0>", "Deed of Gift<U+00A0>", 
+    "Sale < = 1000<U+00A0>", "Sale < = 1000<U+00A0>", "Valid Sale<U+00A0>", 
+    "Valid Sale<U+00A0>"), x.16 = c("Map", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", 
+    "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>", "Map<U+00A0>"
+    )), .Names = c("X1", "x", "x.1", "x.2", "x.3", "x.4", "x.5", 
+"x.6", "x.7", "x.8", "x.9", "x.10", "x.11", "x.12", "x.13", "x.14", 
+"x.15", "x.16"), class = c("tbl_df", "tbl", "data.frame"), row.names = c(NA, 
+-51L), spec = structure(list(cols = structure(list(X1 = structure(list(), class = c("collector_integer", 
+"collector")), x = structure(list(), class = c("collector_character", 
+"collector")), x.1 = structure(list(), class = c("collector_character", 
+"collector")), x.2 = structure(list(), class = c("collector_character", 
+"collector")), x.3 = structure(list(), class = c("collector_character", 
+"collector")), x.4 = structure(list(), class = c("collector_character", 
+"collector")), x.5 = structure(list(), class = c("collector_character", 
+"collector")), x.6 = structure(list(), class = c("collector_character", 
+"collector")), x.7 = structure(list(), class = c("collector_character", 
+"collector")), x.8 = structure(list(), class = c("collector_character", 
+"collector")), x.9 = structure(list(), class = c("collector_character", 
+"collector")), x.10 = structure(list(), class = c("collector_character", 
+"collector")), x.11 = structure(list(), class = c("collector_character", 
+"collector")), x.12 = structure(list(), class = c("collector_character", 
+"collector")), x.13 = structure(list(), class = c("collector_character", 
+"collector")), x.14 = structure(list(), class = c("collector_character", 
+"collector")), x.15 = structure(list(), class = c("collector_character", 
+"collector")), x.16 = structure(list(), class = c("collector_character", 
+"collector"))), .Names = c("X1", "x", "x.1", "x.2", "x.3", "x.4", 
+"x.5", "x.6", "x.7", "x.8", "x.9", "x.10", "x.11", "x.12", "x.13", 
+"x.14", "x.15", "x.16")), default = structure(list(), class = c("collector_guess", 
+"collector"))), .Names = c("cols", "default"), class = "col_spec"))
